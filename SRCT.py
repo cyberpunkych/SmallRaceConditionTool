@@ -14,7 +14,7 @@ print """
 """
 
 
-ap = argparse.ArgumentParser(epilog="Example:  python "+sys.argv[0]+" --coint 100 --url 'http://google.com/vuln?money=31337' --method POST --post-data 'login=admin&pass=qwerty' --cookie 'auth=1&user=root' --headers 'X-Forwarded-for: localhost' 'Referer: google.com'", prog='srct.py',
+ap = argparse.ArgumentParser(epilog="Example:  python "+sys.argv[0]+" --count 100 --url 'http://google.com/vuln?money=31337' --method POST --post-data 'login=admin&pass=qwerty' --cookie 'auth=1&user=root' --headers 'X-Forwarded-for: localhost' 'Referer: google.com'", prog='srct.py',
   formatter_class=lambda prog: argparse.HelpFormatter(prog,max_help_position=50))
 ap.add_argument('--url', '-u', nargs=1, help="Testing url")
 ap.add_argument('--count', '-c', nargs=1, help="Count of threads")
