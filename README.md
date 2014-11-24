@@ -3,4 +3,4 @@ SmallRaceConditionTool
 
 Example: 
 
-python srct.py --count 100 --url 'http://google.com/vuln?money=31337' --method POST --post-data 'login=admin&pass=qwerty' --cookie 'auth=1&user=root' --header 'X-Forwarded-for: localhost' 'Referer: google.com'
+python srct.py --url http://google.com/vulnscript -m POST --post-data "qwe=123&rewr=222" --headers "Pew: 123" "Qwe: 312" -c 10 --cookie "Test=1; Auth=true" -dbg
