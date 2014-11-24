@@ -14,15 +14,22 @@ print """
 """
 
 
-ap = argparse.ArgumentParser()
+ap = argparse.ArgumentParser(epilog="Example:  python "+sys.argv[0]+" --coint 100 --url 'http://google.com/vuln?money=31337' --method POST --post-data 'login=admin&pass=qwerty' --cookie 'auth=1&user=root' --header 'X-Forwarded-for: localhost' 'Referer: google.com'", prog='srct.py',
+  formatter_class=lambda prog: argparse.HelpFormatter(prog,max_help_position=50))
 ap.add_argument('--url', '-u', nargs=1, help="Testing url")
 ap.add_argument('--count', '-c', nargs=1, help="Count of threads")
 ap.add_argument('--method', '-m', nargs=1, help="Method (GET or POST)")
-ap.add_argument('--post_data', '-d', nargs=1, help="POST-data for request")
+ap.add_argument('--post-data', '-d', nargs=1, help="POST-data for request")
 ap.add_argument('--cookie', '-ck', nargs=1, help="Add cookie to your request")
 ap.add_argument('--debug', '-dbg', action='store_const', const=1, help="Show server responses")
+ap.add_argument('--headers', nargs='+', help="Add your custom headers to request")
 
 opts = ap.parse_args()
+headers = {}
+if opts.headers is not None:
+	for i in xrange(len(opts.headers)):
+		headers[opts.headers[i].split(' ')[0][:-1]]=opts.headers[i].split(' ')[1]
+print headers
 
 if opts.cookie is not None:
 	cookie = str(opts.cookie[0])
@@ -40,11 +47,10 @@ debug = opts.debug
 
 
 
+
 def POST(url, post_data):
 	if cookie is not None:
-		headers = { 'Cookie' : cookie }
-	else:
-		headers = {}
+		headers['Cookie']=cookie
 	req = urllib2.urlopen(urllib2.Request(url, post_data, headers))
 	try: req
 	except URLError as e:
@@ -53,9 +59,10 @@ def POST(url, post_data):
 		print req.read()
 
 def GET(url):
-	request = urllib2.Request(url)
+	request = urllib2.Request(url, headers=headers)
 	if cookie is not None:
 		request.add_header("Cookie", cookie)
+
 	req = urllib2.urlopen(request)
 	try: req
 	except URLError as e:
